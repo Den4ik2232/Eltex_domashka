@@ -2,10 +2,10 @@
 
 int main(){
 unsigned int n;
-char c;
 scanf("%d", &n);
+int count = 0;
 for(int i = 0; i < 32; i++){
-c = n << i >> 31;
-printf("%x", c);
+if(n << i >> 31 == 1) count++;
 }
+printf("%d", count);
 }
