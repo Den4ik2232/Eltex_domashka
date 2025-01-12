@@ -18,7 +18,6 @@ void print_all(abonent *ukaz);
 
 int main(void){
 	abonent abonents[100] = {0};
-	abonent *ukaz = abonents;
 	int n;
 	int count_abonents = 0;
 	printf("Выберите действие: \n1) Добавить абонента \n2) Удалить абонента \n3) Поиск абонентов по имени \n4) Вывод всех записей \n5) Выход\n");
@@ -29,21 +28,21 @@ int main(void){
 			char name[10] = {0}, second_name[10] = {0}, tel[10] = {10};
 			while(getchar() != '\n');
 			printf("Введите имя абонента(не более 10 символов): ");
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i <= 10; i++){
 				char a = getchar();
 				if(a != '\n') name[i] = a;
 				else break;}
 			printf("Введите фамилию абонента(не более 10 символов): ");
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i <= 10; i++){
 				char a = getchar();
 				if(a != '\n') second_name[i] = a;
 				else break;}
 			printf("Введите телефон абонента(не более 10 символов): ");
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i <= 10; i++){
 				char a = getchar();
 				if(a != '\n') tel[i] = a;
 				else break;}
-			add_abonent(ukaz, name, second_name, tel);
+			add_abonent(abonents, name, second_name, tel);
 			count_abonents++;}
 			else printf("Больше нет места!\n");
 		}
@@ -52,21 +51,21 @@ int main(void){
 			char name[10] = {0}, second_name[10] = {0}, tel[10] = {10};
 			while(getchar() != '\n');
 			printf("Введите имя абонента(не более 10 символов): ");
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i <= 10; i++){
 				char a = getchar();
 				if(a != '\n') name[i] = a;
 				else break;}
 			printf("Введите фамилию абонента(не более 10 символов): ");
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i <= 10; i++){
 				char a = getchar();
 				if(a != '\n') second_name[i] = a;
 				else break;}
 			printf("Введите телефон абонента(не более 10 символов): ");
-			for(int i = 0; i < 10; i++){
+			for(int i = 0; i <= 10; i++){
 				char a = getchar();
 				if(a != '\n') tel[i] = a;
 				else break;}
-			delete_abonent(ukaz, name, second_name, tel);
+			delete_abonent(abonents, name, second_name, tel);
 			count_abonents--;}
 			else printf("Абонентов не найдено!\n");
 		}
@@ -78,10 +77,10 @@ int main(void){
 				char a = getchar();
 				if(a != '\n') name[i] = a;
 				else break;}
-			find_abonent(ukaz, name);
+			find_abonent(abonents, name);
 		}
 		if(n == 4){
-			print_all(ukaz);
+			print_all(abonents);
 			printf("Найдено %d абонентов\n", count_abonents);}
 		if(n > 5 || n <= 0) printf("Такой команды нет!\n");
 		printf("Выберите действие: \n1) Добавить абонента \n2) Удалить абонента \n3) Поиск абонентов по имени \n4) Вывод всех записей \n5) Выход\n");
@@ -89,19 +88,19 @@ int main(void){
 		}
 }
 
-void print_name(struct abonent *ukaz){
+void print_name(abonent *ukaz){
 	printf("Имя: ");
 	for(int i = 0; i < 10; i++){
 		printf("%c", ukaz->name[i]);}
 }
 
-void print_second_name(struct abonent *ukaz){
+void print_second_name(abonent *ukaz){
 	printf("Фамилия: ");
 	for(int i = 0; i < 10; i++){
 		printf("%c", ukaz->second_name[i]);}
 }
 
-void print_tel(struct abonent *ukaz){
+void print_tel(abonent *ukaz){
 	printf("Номер телефона: ");
 	for(int i = 0; i < 10; i++){
 		printf("%c", ukaz->tel[i]);}
@@ -168,4 +167,3 @@ for(int i = 0; i < 100; i++){
 		printf("\n");}
 	ukaz1++;}
 }
-
