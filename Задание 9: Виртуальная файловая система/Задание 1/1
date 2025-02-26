@@ -1,0 +1,14 @@
+// C program to illustrate
+// open system call
+#include <stdio.h>
+
+
+int main()
+{
+    // if file does not have in directory
+    // then file foo.txt is created.
+    int fd = open("foo.txt", O_RDONLY | O_CREAT);
+    printf("%d", fd);
+    }
+    return 0;
+}
