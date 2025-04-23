@@ -7,6 +7,8 @@
 #include <mqueue.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 
 #define MAX_CLIENTS 5
 #define MAX_LEN_MESSAGE 128
@@ -19,10 +21,9 @@ typedef struct {
 } ClientInfo;
 
 void del_client(char name[32], char queue_name[64]);
-void *thread_command(void *arg);
-void start();
-void stop();
-void send_to_all_clients(const char *msg);
 void *listen_clients(void *args);
+void send_to_all_clients(const char *msg);
+void start();
+void send_user_list();
 
-#endif //MESSAGE_CHAT_H
+#endif // MESSAGE_CHAT_H

@@ -10,10 +10,8 @@
 
 #define SERVER_QUEUE  "/chat_server"
 #define MAX_MSG_SIZE  1024
-#define MAX_CLIENTS 5
+
 void run();
 void *receive_messages(void *arg);
-
-
 
 #endif //MESSAGE_CHAT_H

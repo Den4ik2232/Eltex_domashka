@@ -4,9 +4,7 @@
 char name[32];
 char client_queue[64];
 mqd_t client_q;
-
-char users[MAX_CLIENTS][32];
-int user_count = 0;
+mqd_t server_q;
 
 void *receive_messages(void *arg) {
     char buffer[MAX_MSG_SIZE];
@@ -14,14 +12,7 @@ void *receive_messages(void *arg) {
         ssize_t bytes_read = mq_receive(client_q, buffer, MAX_MSG_SIZE, NULL);
         if (bytes_read > 0) {
             if (strncmp(buffer, "USERS:", 6) == 0) {
-                // Parse user list: USERS:name1,name2,...
-                user_count = 0;
-                char *ptr = strtok(buffer + 6, ",");
-                while (ptr && user_count < MAX_CLIENTS) {
-                    strncpy(users[user_count++], ptr, 32);
-                    ptr = strtok(NULL, ",");
-                }
-                draw_user_list(users, user_count);
+                update_user_list(buffer + 6);
             } else {
                 draw_message(buffer);
             }
@@ -49,7 +40,7 @@ void run() {
         exit(1);
     }
 
-    mqd_t server_q = mq_open(SERVER_QUEUE, O_WRONLY);
+    server_q = mq_open(SERVER_QUEUE, O_WRONLY);
     if (server_q == -1) {
         perror("Cannot connect to server");
         exit(1);
@@ -60,22 +51,29 @@ void run() {
     mq_send(server_q, join_msg, strlen(join_msg) + 1, 0);
 
     init_graphics();
-
     pthread_t recv_thread;
     pthread_create(&recv_thread, NULL, receive_messages, NULL);
 
     char text[512];
     while (1) {
-        get_input(text, sizeof(text));
-        if (strlen(text) == 0) continue;
+        get_input(text);
+        if (strcmp(text, "/exit") == 0) {
+            char exit_msg[MAX_MSG_SIZE];
+            snprintf(exit_msg, sizeof(exit_msg), "EXIT:%s:%s", name, client_queue);
+            mq_send(server_q, exit_msg, strlen(exit_msg) + 1, 0);
+            break;
+        }
 
         char full_msg[MAX_MSG_SIZE];
         snprintf(full_msg, sizeof(full_msg), "MSG:%s: %s", name, text);
         mq_send(server_q, full_msg, strlen(full_msg) + 1, 0);
     }
 
+    pthread_cancel(recv_thread);
     pthread_join(recv_thread, NULL);
     mq_close(client_q);
     mq_unlink(client_queue);
+    mq_close(server_q);
     close_graphics();
 }
+
