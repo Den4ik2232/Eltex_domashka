@@ -1,0 +1,24 @@
+#include"sign.h"
+
+void run(){
+	printf("dfsfdf\n");
+	struct sigaction act = {0};
+	printf("dfsfdf\n");
+	act.sa_sigaction = hdl;
+	printf("dfsfdf\n");
+	sigemptyset(&act.sa_mask);
+	printf("dfsfdf\n");
+	act.sa_flags = 0;
+	printf("dfsfdf\n");
+	sigaction(SIGUSR1, &act, NULL);
+	printf("dfsfdf\n");
+	pid_t pid = getpid();
+	printf("wait signal... pid = %d", pid);
+	while(1){
+		pause();
+	}
+}
+
+void hdl(int signum, siginfo_t *info, void *context){
+	printf("Получен сигнал %d", signum);
+}
