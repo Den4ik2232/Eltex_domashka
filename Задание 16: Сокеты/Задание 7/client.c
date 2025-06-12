@@ -33,7 +33,7 @@ int main() {
     struct sockaddr_ll serv;
     const char *interface = "enp0s8"; // <-- укажи свой интерфейс
     const unsigned char src_mac[6] = {0x08,0x00,0x27,0x4a,0xd0,0x6e}; // пример MAC
-    const unsigned char dst_mac[6] = {0xff,0xff,0xff,0xff,0xff,0xff}; // broadcast
+    const unsigned char dst_mac[6] = {0x74,0x56,0x3c,0x2c,0x76,0x96}; // broadcast
 
     sockfd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
     if (sockfd < 0) {
