@@ -31,9 +31,9 @@ int main() {
     struct udphdr *udp = (struct udphdr *)(buffer + sizeof(struct ethhdr) + sizeof(struct iphdr));
     char *payload = (char *)(buffer + sizeof(struct ethhdr) + sizeof(struct iphdr) + sizeof(struct udphdr));
     struct sockaddr_ll serv;
-    const char *interface = "enp0s8"; // <-- укажи свой интерфейс
-    const unsigned char src_mac[6] = {0x08,0x00,0x27,0x4a,0xd0,0x6e}; // пример MAC
-    const unsigned char dst_mac[6] = {0x74,0x56,0x3c,0x2c,0x76,0x96}; // broadcast
+    const char *interface = "enp0s8"; 
+    const unsigned char src_mac[6] = {0x08,0x00,0x27,0x4a,0xd0,0x6e}; 
+    const unsigned char dst_mac[6] = {0x74,0x56,0x3c,0x2c,0x76,0x96}; 
 
     sockfd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
     if (sockfd < 0) {
@@ -56,20 +56,18 @@ int main() {
     ip->ttl = 64;
     ip->protocol = IPPROTO_UDP;
     ip->check = 0;
-    ip->saddr = inet_addr("192.168.1.2");   // <-- IP источника
-    ip->daddr = inet_addr("192.168.1.255"); // <-- IP назначения
+    ip->saddr = inet_addr("192.168.1.107");  
+    ip->daddr = inet_addr("192.168.1.105"); 
     ip->check = checksum((unsigned short *)ip, sizeof(struct iphdr)/2);
 
     // UDP Header
     udp->source = htons(12345);
     udp->dest = htons(54321);
     udp->len = htons(sizeof(struct udphdr) + PAYLOAD_LEN);
-    udp->check = 0; // UDP checksum optional for IPv4
+    udp->check = 0; 
 
-    // Payload
     memcpy(payload, PAYLOAD, PAYLOAD_LEN);
 
-    // sockaddr_ll заполнение
     memset(&serv, 0, sizeof(serv));
     serv.sll_family = AF_PACKET;
     serv.sll_protocol = htons(ETH_P_IP);
@@ -88,7 +86,7 @@ int main() {
     if (sendto(sockfd, buffer, frame_len, 0, (struct sockaddr *)&serv, sizeof(serv)) < 0) {
         perror("sendto");
         close(sockfd);
-        exit(EXIT_FAILURE);
+        exit(1);
     }
 
 
@@ -110,7 +108,7 @@ int main() {
 
         struct udphdr *recv_udp = (struct udphdr *)((unsigned char *)recv_ip + recv_ip->ihl*4);
 
-        if (ntohs(recv_udp->dest) != 12345) continue; // проверяем порт назначения
+        if (ntohs(recv_udp->dest) != 12345) continue; 
 
         char *recv_payload = (char *)((unsigned char *)recv_udp + sizeof(struct udphdr));
         int recv_payload_len = ntohs(recv_udp->len) - sizeof(struct udphdr);
