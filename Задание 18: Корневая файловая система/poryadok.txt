@@ -1,0 +1,72 @@
+arm-linux-gnueabihf-gcc -static init.c -o init
+sudo arm-linux-gnueabihf-gcc -static init.c -o init
+file ./init
+sudo sh -c "echo ./init | cpio -o -H newc | gzip > initramfs.cpio.gz"
+QEMU_AUDIO_DRV=none qemu-system-arm -M vexpress-a9 -kernel zImage -initrd initramfs.cpio.gz -dtb vexpress-v2p-ca9.dtb -append "console=ttyAMA0" -nographic
+вывод:
+[    1.583227] Segment Routing with IPv6
+[    1.583382] In-situ OAM (IOAM) with IPv6
+[    1.583686] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    1.586223] NET: Registered PF_PACKET protocol family
+[    1.586250] can: controller area network core
+[    1.586494] NET: Registered PF_CAN protocol family
+[    1.586530] can: raw protocol
+[    1.586617] can: broadcast manager protocol
+[    1.586738] can: netlink gateway - max_hops=1
+[    1.587606] Key type dns_resolver registered
+[    1.588337] ThumbEE CPU extension supported.
+[    1.588402] Registering SWP/SWPB emulation handler
+[    1.648550] Loading compiled-in X.509 certificates
+[    1.665903] 10009000.serial: ttyAMA0 at MMIO 0x10009000 (irq = 37, base_baud = 0) is a PL011 rev1
+[    1.667128] printk: console [ttyAMA0] enabled
+[    1.972318] 1000a000.serial: ttyAMA1 at MMIO 0x1000a000 (irq = 38, base_baud = 0) is a PL011 rev1
+[    1.973617] 1000b000.serial: ttyAMA2 at MMIO 0x1000b000 (irq = 39, base_baud = 0) is a PL011 rev1
+[    1.974719] 1000c000.serial: ttyAMA3 at MMIO 0x1000c000 (irq = 40, base_baud = 0) is a PL011 rev1
+[    2.056734] input: ImExPS/2 Generic Explorer Mouse as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10007000.kmi/serio1/input/input2
+[    3.255073] clk: Disabling unused clocks
+[    3.255312] PM: genpd: Disabling unused power domains
+[    3.307486] Freeing unused kernel image (initmem) memory: 2048K
+[    3.313413] Run /init as init process
+--------> Hello world! <-----------
+QEMU: Terminated
+Вторая часть задания с busybox:
+ 2104  sudo make distclean
+ 2105  sudo ARCH=arm make defconfig
+ 2106  sudo ARCH=arm make menuconfig
+ 2107  sudo ARCH=arm make -j 4
+ 2108  ls
+ 2113  file ./busybox
+ 2115  sudo ARCH=arm make install
+ 2117  cd _install/
+ 2129  QEMU_AUDIO_DRV=none qemu-system-arm -M vexpress-a9 -kernel zImage -initrd initramfs.cpio.gz -dtb vexpress-v2p-ca9.dtb -append "console=ttyAMA0 rdinit=/bin/ash" -nographic
+вывод:
+/bin/ash: can't access tty; job control turned off
+/ # ls
+bin      dev      linuxrc  root     sbin     usr
+/ # cd bin/
+/bin # ls
+arch           dumpkmap       kill           netstat        setpriv
+ash            echo           link           nice           setserial
+base32         ed             linux32        pidof          sh
+base64         egrep          linux64        ping           sleep
+busybox        false          ln             ping6          stat
+cat            fatattr        login          pipe_progress  stty
+chattr         fdflush        ls             printenv       su
+chgrp          fgrep          lsattr         ps             sync
+chmod          fsync          lzop           pwd            tar
+chown          getopt         makemime       reformime      touch
+conspy         grep           mkdir          resume         true
+cp             gunzip         mknod          rev            umount
+cpio           gzip           mktemp         rm             uname
+cttyhack       hostname       more           rmdir          usleep
+date           hush           mount          rpm            vi
+dd             ionice         mountpoint     run-parts      watch
+df             iostat         mpstat         scriptreplay   zcat
+dmesg          ipcalc         mt             sed
+dnsdomainname  kbd_mode       mv             setarch
+/bin # [   13.913374] amba 1000f000.wdt: deferred probe pending: (reason unknown)
+[   13.913530] amba 100e0000.memory-controller: deferred probe pending: (reason unknown)
+[   13.913558] amba 100e1000.memory-controller: deferred probe pending: (reason unknown)
+[   13.913577] amba 100e5000.watchdog: deferred probe pending: (reason unknown)
+QEMU: Terminated
+
