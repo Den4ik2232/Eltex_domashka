@@ -1,0 +1,45 @@
+ 1885  sudo git clone https://github.com/openssh/openssh-portable
+ 1895  sudo git clone https://github.com/madler/zlib
+ 1943  sudo git checkout v1.3
+ 1944  sudo make distclean
+ 1945  sudo CC=arm-linux-gnueabihf-gcc ./configure
+ 1946  sudo make 
+ 1948  sudo make install prefix=$PWD/_install
+ 1954  sudo git clone https://github.com/openssl/openssl
+ 2011  sudo git checkout openssl-3.0.14
+ 2016  sudo make distclean
+ 2017  export CROSS_COMPILE=arm-linux-gnueabihf-
+ 2018  export CC=${CROSS_COMPILE}gcc
+ 2025  sudo ./Configure linux-armv4 no-tests --prefix=$PWD/_install --cross-compile-prefix=${CROSS_COMPILE}
+ 2027  sudo make -j$(nproc)
+ 2029  sudo make install
+ 2032  cd _install/
+ 2035  file ./openssl 
+ 2036  readelf -d ./openssl 
+ 2040  cd openssh-portable/
+ 2053  sudo apt install autoconf automake libtool
+ 2054  sudo autoreconf -fi
+ 2056  sudo ./configure --prefix=$PWD/_install --host=arm-linux-gnueabihf --with-zlib=$PWD/../zlib/_install --with-ssl-dir=$PWD/../openssl/_install
+ 2057  sudo make
+ 2058  sudo make install
+ 2065  file ./scp
+ 2066  readelf -d ./scp 
+ 2067  readelf -d ./ssh
+ 2105  file ./ssh
+ 2106  readelf -d ./ssh
+ 2107  file ./ssh-add 
+ 2108  readelf -d ./ssh-add 
+ 2109  readelf ./openssl 
+ 2110  readelf -d ./openssl 
+ 2118  sudo cp /usr/arm-linux-gnueabihf/lib/ld-linux-armhf.so.3 .
+ 2119  sudo cp /usr/arm-linux-gnueabihf/lib/libc.so.6 .
+ 2124  sudo sh -c "find . | cpio -o -H newc | gzip > initramfs.cpio.gz"
+ 2127  QEMU_AUDIO_DRV=none qemu-system-arm -M vexpress-a9 -kernel zImage -initrd initramfs.cpio.gz -dtb vexpress-v2p-ca9.dtb -append "console=ttyAMA0 rdinit=/bin/ash" -nographic
+Вывод в QEMU:
+Для примера запустил ssh-agent
+/ # ssh-agent 
+[  113.386557] random: crng init done
+SSH_AUTH_SOCK=//.ssh/agent/s.eexPdtNNoT.agent.xyUT3dqp92; export SSH_AUTH_SOCK;
+SSH_AGENT_PID=76; export SSH_AGENT_PID;
+echo Agent pid 76;
+/ # xQEMU: Terminated
