@@ -1,0 +1,1 @@
+savedcmd_/home/denis/Eltex_domashka/zadanie20/zadanie3/Module.symvers :=  scripts/mod/modpost -M -m -a      -o /home/denis/Eltex_domashka/zadanie20/zadanie3/Module.symvers -T /home/denis/Eltex_domashka/zadanie20/zadanie3/modules.order -i Module.symvers -e 

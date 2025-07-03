@@ -1,1 +1,0 @@
-savedcmd_/home/denis/Eltex_domashka/zadanie20/test_module.ko := ld -r -m elf_x86_64 -z noexecstack --no-warn-rwx-segments --build-id=sha1  -T scripts/module.lds -o /home/denis/Eltex_domashka/zadanie20/test_module.ko /home/denis/Eltex_domashka/zadanie20/test_module.o /home/denis/Eltex_domashka/zadanie20/test_module.mod.o

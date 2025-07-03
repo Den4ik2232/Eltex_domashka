@@ -1,12 +1,15 @@
 #include<linux/module.h>
 #include<linux/kernel.h>
 #include<linux/fs.h>
+#include<linux/proc_fs.h>
 #include<linux/rwlock.h>
 #include<linux/uaccess.h>
 
 static int major = 0;
 static rwlock_t lock;
 static char test_string[15] = "Hello!\0";
+static struct proc_dir_entry *test;
+static struct kobject *test_kobj;
 
 ssize_t test_read(struct file *fd, char __user *buff, size_t size, loff_t *off)
 {
@@ -42,7 +45,7 @@ ssize_t test_proc_read(struct file *fd, char __user *buff, size_t size, loff_t *
 }
 
 
-ssize_t test_proc_write(struct file *fd, char __user *buff, size_t size, loff_t *off)
+ssize_t test_proc_write(struct file *fd, const char __user *buff, size_t size, loff_t *off)
 {
 	size_t rc = 0;
 
@@ -125,6 +128,7 @@ void cleanup_module(void)
 	kobject_put(test_kobj);
 	pr_info("Module unloaded!!!!!\n");
 }
+
 
 MODULE_LICENSE("GPL");
 
