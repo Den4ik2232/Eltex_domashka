@@ -1,0 +1,1 @@
+savedcmd_/home/denis/Eltex_domashka/zadanie20/zadanie2/modules.order := {   echo /home/denis/Eltex_domashka/zadanie20/zadanie2/test_module2.o; :; } > /home/denis/Eltex_domashka/zadanie20/zadanie2/modules.order
