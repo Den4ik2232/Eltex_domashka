@@ -1,0 +1,1 @@
+savedcmd_/home/denis/Eltex_domashka/zadanie20/zadanie3/test_module2.mod := printf '%s\n'   test_module2.o | awk '!x[$$0]++ { print("/home/denis/Eltex_domashka/zadanie20/zadanie3/"$$0) }' > /home/denis/Eltex_domashka/zadanie20/zadanie3/test_module2.mod
