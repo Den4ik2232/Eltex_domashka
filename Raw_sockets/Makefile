@@ -10,4 +10,4 @@ client_prog: client/client.c client/main.c
 	$(CC) $(CFLAGS) -o client_prog client/client.c client/main.c
 
 clean:
-	rm -f server/server client/client
+	rm -f server_prog client_prog

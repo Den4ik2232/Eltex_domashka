@@ -12,8 +12,10 @@
 
 void run_client(const char *server_ip) {
     int sockfd = socket(AF_INET, SOCK_RAW, IPPROTO_UDP);
-    if (sockfd < 0) { perror("socket"); exit(1); }
-
+    if (sockfd < 0) { 
+	perror("socket"); 
+	exit(1); 
+    }
     int one = 1;
     setsockopt(sockfd, IPPROTO_IP, IP_HDRINCL, &one, sizeof(one));
 

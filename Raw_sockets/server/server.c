@@ -50,7 +50,7 @@ void run_server() {
     struct sockaddr_in src_addr;
     socklen_t addrlen = sizeof(src_addr);
 
-    printf("[+] RAW UDP server started on port %d\n", SERVER_PORT);
+    printf("Server start, port = %d\n", SERVER_PORT);
 
     while (1) {
         ssize_t len = recvfrom(sockfd, buffer, sizeof(buffer), 0,
@@ -72,7 +72,7 @@ void run_server() {
 
         if (strcmp(payload, CLOSE_MSG) == 0) {
             remove_client(*(struct in_addr *)&ip->saddr, src_port);
-            printf("[-] Client disconnected: %s:%d\n", inet_ntoa(*(struct in_addr *)&ip->saddr), src_port);
+            printf("Client disconnect: %s:%d\n", inet_ntoa(*(struct in_addr *)&ip->saddr), src_port);
             continue;
         }
 
@@ -83,7 +83,6 @@ void run_server() {
         char reply[MAX_MSG_LEN];
         snprintf(reply, sizeof(reply), "%s %d", payload, clients[id].msg_count);
 
-        // Construct IP and UDP headers
         char packet[1500];
         memset(packet, 0, sizeof(packet));
 
